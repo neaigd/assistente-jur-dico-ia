@@ -32,7 +32,7 @@ declare global {
 }
 
 const App: React.FC = () => {
-  const [emails, setEmails] = useState<SimulatedEmail[]>([]);
+  const [, setEmails] = useState<SimulatedEmail[]>([]);
   const [markdownReport, setMarkdownReport] = useState<string>('');
   const [aiTasks, setAiTasks] = useState<AiSuggestedTask[]>([]);
   const [selectedTaskIds, setSelectedTaskIds] = useState<string[]>([]);
@@ -91,7 +91,7 @@ const App: React.FC = () => {
                          try {
                             // The imported `jwtDecode` variable is the module object.
                             // The actual decode function is a property on this object.
-                            const decoded = jwtDecode.jwtDecode<DecodedJwt>(tokenResponse.access_token);
+                            // jwtDecode.jwtDecode<DecodedJwt>(tokenResponse.access_token); // Line removed as decoded variable is unused
                             // console.log("Decoded access token (for informational purposes):", decoded); // Optional: log if needed
                         } catch (e) {
                             console.error("Error decoding access_token (might not be a JWT or might be opaque):", e);
@@ -289,8 +289,8 @@ const App: React.FC = () => {
   };
 
   const handleToggleTask = (taskId: string) => {
-    setSelectedTaskIds(prev =>
-      prev.includes(taskId) ? prev.filter(id => id !== taskId) : [...prev, taskId]
+    setSelectedTaskIds((prev: string[]) =>
+      prev.includes(taskId) ? prev.filter((id: string) => id !== taskId) : [...prev, taskId]
     );
   };
 
@@ -306,7 +306,7 @@ const App: React.FC = () => {
 
   const handleScheduleSelectedTasks = () => {
     selectedTaskIds.forEach(taskId => {
-      const task = aiTasks.find(t => t.id === taskId);
+      const task = aiTasks.find((t: AiSuggestedTask) => t.id === taskId);
       if (task) {
         const calendarLink = generateGoogleCalendarLink(task);
         window.open(calendarLink, '_blank');

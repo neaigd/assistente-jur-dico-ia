@@ -1,7 +1,11 @@
+import { fileURLToPath } from 'url';
 import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 
-export default defineConfig(({ mode }) => {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default defineConfig(({ mode }: { mode: string }) => {
     const env = loadEnv(mode, '.', '');
     // Condicionalmente define a base para produção
     // Isso é importante para o deploy no GitHub Pages, que serve de um subdiretório
