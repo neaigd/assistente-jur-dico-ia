@@ -1,0 +1,71 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          # VITE_BASE_URL é necessário para que o vite saiba o caminho base no GitHub Pages
+          # O nome do repositório será usado como base path.
+          # Ex: https://<username>.github.io/<repository-name>/
+          # Se o nome do repositório for 'meu-app-legal', VITE_BASE_URL deve ser '/meu-app-legal/'
+          # O GitHub Actions fornece GITHUB_REPOSITORY no formato 'owner/repo-name'
+          # Precisamos extrair 'repo-name' e prefixá-lo com '/'.
+          # Nota: Esta abordagem com `echo` e `sed` é uma forma de construir o path dinamicamente.
+          # Uma alternativa mais simples seria definir VITE_BASE_URL diretamente no vite.config.ts
+          # ou passar o nome do repositório como um secret se não quiser lógica no workflow.
+          # Por agora, vamos tentar uma abordagem dinâmica. Se falhar, podemos ajustar.
+          # Update: A maneira mais robusta é configurar `base` no `vite.config.ts` condicionalmente
+          # ou usar uma action que determine isso. Para este exercício, vamos assumir que
+          # o `base` será configurado corretamente no `vite.config.ts` ou que o padrão '/' é aceitável
+          # se o deploy for para a raiz do domínio do Pages (não um subdiretório de repositório).
+          # Se o deploy for para <username>.github.io/<repo-name>, o `base` no vite.config.ts
+          # precisa ser `/<repo-name>/`.
+          # Para manter este workflow simples, não adicionarei lógica complexa de base path aqui.
+          # O usuário precisará garantir que `vite.config.ts` esteja configurado com o `base` correto.
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        # Nenhuma configuração adicional necessária se as defaults forem suficientes.
+        # Esta action prepara o ambiente para o deploy.
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -3,7 +3,6 @@ export const GEMINI_IMAGE_MODEL = 'imagen-3.0-generate-002'; // Though not used 
 
 export const APP_TITLE = "Assistente Jurídico IA";
 
-export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || ""; // Será obtido do ambiente
 export const GMAIL_SCOPES = "https://www.googleapis.com/auth/gmail.readonly";
 
 export const MAX_EMAILS_TO_PROCESS = 10; // Limite para não sobrecarregar a API / processamento

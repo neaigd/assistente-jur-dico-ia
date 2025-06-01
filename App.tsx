@@ -11,10 +11,11 @@ import { SimulatedEmail, AiSuggestedTask, GoogleUser, TokenClient, DecodedJwt } 
 import { fetchGmailEmails, fetchSimulatedEmailsFallback } from './services/emailService'; 
 import { summarizeTextWithGemini, suggestTasksWithGemini } from './services/geminiService';
 import { generateGoogleCalendarLink } from './services/calendarService';
-import { GOOGLE_CLIENT_ID, GMAIL_SCOPES } from './constants';
+import { GMAIL_SCOPES } from './constants';
 
 // Initialize Gemini AI
-const GEMINI_API_KEY = process.env.API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 let ai: GoogleGenAI | null = null;
 if (GEMINI_API_KEY) {
   ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });

@@ -3,10 +3,15 @@ import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
+    // Condicionalmente define a base para produção
+    // Isso é importante para o deploy no GitHub Pages, que serve de um subdiretório
+    const base = mode === 'production' ? '/assistente-juridico-ia/' : '/'; 
+
     return {
+      base: base, // Adiciona a configuração base aqui
       define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+        'process.env.GOOGLE_CLIENT_ID': JSON.stringify(env.GOOGLE_CLIENT_ID)
       },
       resolve: {
         alias: {
