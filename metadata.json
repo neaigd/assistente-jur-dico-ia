@@ -1,0 +1,5 @@
+{
+  "name": "Assistente Jurídico IA",
+  "description": "Um aplicativo MPC para resumir e-mails de andamentos processuais jurídicos, sugerir providências com IA e auxiliar no agendamento.",
+  "requestFramePermissions": []
+}
