@@ -14,3 +14,6 @@ dist/
 # Ignore common OS files
 .DS_Store
 thumbs.db
+
+# Ignore dev-scripts
+dev-scripts/
