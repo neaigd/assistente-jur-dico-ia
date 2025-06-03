@@ -1,21 +1,20 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { GoogleGenAI } from "@google/genai";
-import jwtDecode from 'jwt-decode'; // User wants this import style
 import { Header } from './components/Header';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { ReportDisplay } from './components/ReportDisplay';
 import { TaskSuggestions } from './components/TaskSuggestions';
 import { ConfigurationInstructions } from './components/ConfigurationInstructions'; // Novo componente
-import { SimulatedEmail, AiSuggestedTask, GoogleUser, TokenClient, DecodedJwt } from './types';
+import { SimulatedEmail, AiSuggestedTask, GoogleUser, TokenClient } from './types';
 import { fetchGmailEmails, fetchSimulatedEmailsFallback } from './services/emailService'; 
 import { summarizeTextWithGemini, suggestTasksWithGemini } from './services/geminiService';
 import { generateGoogleCalendarLink } from './services/calendarService';
 import { GMAIL_SCOPES } from './constants';
 
 // Initialize Gemini AI
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GEMINI_API_KEY = import.meta.env.VITE_API_KEY;
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 let ai: GoogleGenAI | null = null;
 if (GEMINI_API_KEY) {
   ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });

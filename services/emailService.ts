@@ -55,8 +55,17 @@ export const fetchGmailEmails = async (accessToken: string): Promise<SimulatedEm
   console.log("Fetching emails from Gmail API...");
   try {
     // 1. List messages (only IDs and threadIDs)
-    // Query for unread emails or emails with specific keywords
-    const query = `is:unread OR (${EMAIL_QUERY_TERMS})`;
+    // Calculate today's date dynamically
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+    const day = today.getDate().toString().padStart(2, '0');
+
+    const dateFilter = `after:${year}/${month}/${day}`;
+
+    // Query for emails with specific keywords within the last 15 days
+    const query = `${dateFilter} ${EMAIL_QUERY_TERMS}`;
     const listResponse = await fetch(`${GMAIL_API_BASE_URL}/messages?q=${encodeURIComponent(query)}&maxResults=${MAX_EMAILS_TO_PROCESS}`, {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     });
