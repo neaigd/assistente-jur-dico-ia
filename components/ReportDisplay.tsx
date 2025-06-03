@@ -55,17 +55,32 @@ export const ReportDisplay: React.FC<ReportDisplayProps> = ({ report, onSendToGm
     <div className="space-y-4">
       <div className="prose prose-invert prose-sm sm:prose-base max-w-none p-4 bg-slate-700/50 rounded-lg shadow min-h-[200px]">
         {formattedReport}
-      </div>
-      <button
+    </div>
+    <div className="flex flex-col sm:flex-row gap-4">
+       <button
         onClick={onSendToGmail}
-        className="w-full flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 disabled:opacity-50"
+        className="flex-1 flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 disabled:opacity-50"
         disabled={!isLoggedIn || !report || report.includes("Falha ao gerar relatório.") || report.includes("Nenhum e-mail encontrado") || report.includes("Relatório Indisponível") || report.includes("Relatório de Demonstração")}
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
         </svg>
-        Enviar Relatório por E-mail (Gmail)
+        Enviar Relatório por E-mail
+      </button>
+      <button
+        onClick={() => {
+          navigator.clipboard.writeText(report);
+          alert('Conteúdo do relatório copiado para a área de transferência!');
+        }}
+        className="flex-1 flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 disabled:opacity-50"
+         disabled={!report || report.includes("Falha ao gerar relatório.") || report.includes("Nenhum e-mail encontrado") || report.includes("Relatório Indisponível") || report.includes("Relatório de Demonstração")}
+      >
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3-69c0 1.657 1.343 3 3 3s3-1.343 3-3v-1.5a.75.75 0 00-.75-.75H21a.75.75 0 00-.75.75V21c0 1.657-1.343 3-3 3H9c-1.657 0-3-1.343-3-3V9c0-1.657 1.343-3 3-3h.75a.75.75 0 00.75-.75V4.5c0-1.657 1.343-3 3-3h2.25c1.657 0 3 1.343 3 3V6m0 0a3 3 0 013 3V6.75M9 3h.008v.008H9V3zm0 0h.008v.008H9V3zm0 0h.008v.008H9V3z" />
+        </svg>
+        Copiar Relatório
       </button>
     </div>
-  );
+  </div>
+);
 };

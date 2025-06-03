@@ -299,7 +299,14 @@ const App: React.FC = () => {
         return;
     }
     const subject = encodeURIComponent("Resumo de Andamentos Processuais - Assistente Jurídico IA");
-    const body = encodeURIComponent(markdownReport);
+    const MAX_BODY_LENGTH = 500; // Define a maximum length for the mailto body (reduced for mailto: compatibility)
+    let emailBody = markdownReport;
+
+    if (markdownReport.length > MAX_BODY_LENGTH) {
+      emailBody = markdownReport.substring(0, MAX_BODY_LENGTH) + '...\n\n[Relatório truncado. Veja o relatório completo na aplicação Assistente Jurídico IA.]';
+    }
+
+    const body = encodeURIComponent(emailBody);
     window.open(`mailto:${googleUser.email}?subject=${subject}&body=${body}`, '_blank');
   };
 

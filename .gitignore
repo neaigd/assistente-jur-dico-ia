@@ -1,0 +1,16 @@
+# Ignore environment variable files
+.env.local
+.env.*
+
+# Ignore node_modules
+node_modules/
+
+# Ignore build output directory
+dist/
+
+# Ignore .vscode folder (optional, but common)
+.vscode/
+
+# Ignore common OS files
+.DS_Store
+thumbs.db
